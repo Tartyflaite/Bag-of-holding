@@ -1,6 +1,6 @@
 class Knapsack:
 
-    def _init__(self, capacity):
+    def __init__(self, capacity):
         self.capacity = capacity
         self.content = []
 
@@ -25,7 +25,7 @@ class Knapsack:
 
 
 def solve_knapsack_greedy(knapsack, objects_dict) -> Knapsack:
-    return Knapsack
+    return knapsack
 
 
 def solve_knapsack_best(knapsack, objects_dict) -> Knapsack:
