@@ -1,13 +1,3 @@
-def solve_knapsack_greedy ( knapsack , objects_dict ) -> Knapsack:
-
-
-def solve_knapsack_best ( knapsack , objects_dict ) -> Knapsack:
-
-
-def solve_knapsack_optimal ( knapsack , objects_dict ) -> Knapsack:
-
-
-
 class Knapsack:
 
     def _init__(self, capacity):
@@ -30,4 +20,17 @@ class Knapsack:
             content += obj + " " + objects_dict[obj] + "\n"
             poids += objects_dict[obj][1]
             valeur += objects_dict[obj][0]
-        content += "Le sac a" + len(self.content) + "objets, pour une valeur de " + valeur + " et un poids de " + poids + "/" + self.capacity + "\n"
+        content += "Le sac a" + len(
+            self.content) + "objets, pour une valeur de " + valeur + " et un poids de " + poids + "/" + self.capacity + "\n"
+
+
+def solve_knapsack_greedy(knapsack, objects_dict) -> Knapsack:
+    return Knapsack
+
+
+def solve_knapsack_best(knapsack, objects_dict) -> Knapsack:
+    return knapsack
+
+
+def solve_knapsack_optimal(knapsack, objects_dict) -> Knapsack:
+    return knapsack
