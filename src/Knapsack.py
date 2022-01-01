@@ -30,7 +30,7 @@ class Knapsack:
 
     def append_item(self, objects_dict, index):
         if self.get_value_and_weight(objects_dict)[1]<self.capacity:
-            self.content.append(objects_dict[index][0])
+            self.content.append(index)
 
 
 def solve_knapsack_greedy(knapsack, objects_dict) -> Knapsack:
@@ -55,16 +55,18 @@ def solve_knapsack_best(knapsack, objects_dict) -> Knapsack:
             elif items_sorted[i - 1][1][1] <= j:
                 value = items_sorted[i - 1][1][0]
                 weight = items_sorted[i - 1][1][1]
+
                 old=table[i - 1][j].duplicate()
                 new=old.duplicate()
                 new.append_item(objects_dict,items_sorted[i - 1][0])
+
                 if new.get_value_and_weight(objects_dict)[0]>old.get_value_and_weight(objects_dict)[0]:
                     table[i][j]=new
                 else:
                     table[i][j] = old.duplicate()
             else:
                 table[i][j] = table[i - 1][j].duplicate()
-    return table[knapsack.capacity][len(objects_dict)][0]
+    return table[len(objects_dict)][knapsack.capacity]
 
 
 def solve_knapsack_optimal(knapsack, objects_dict) -> Knapsack:
