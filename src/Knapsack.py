@@ -29,7 +29,7 @@ class Knapsack:
         return knapsack
 
     def append_item(self, objects_dict, index):
-        if self.get_value_and_weight(objects_dict)[1]<self.capacity:
+        if self.get_value_and_weight(objects_dict)[1] + objects_dict[index][1] <= self.capacity:
             self.content.append(index)
 
 
@@ -70,20 +70,21 @@ def solve_knapsack_best(knapsack, objects_dict) -> Knapsack:
 
 
 def solve_knapsack_optimal(knapsack, objects_dict) -> Knapsack:
-    return find_optimal(knapsack, objects_dict, 0)
+    items_sorted = sort_value_efficiency(objects_dict)
+    return find_optimal(knapsack, objects_dict, 0, items_sorted)
 
 
-def find_optimal(knapsack: Knapsack, objects_dict: dict, index: int) -> Knapsack:
-    if (index >= len(objects_dict) - 1):
+def find_optimal(knapsack: Knapsack, objects_dict: dict, index: int, items_sorted) -> Knapsack:
+    if index >= len(objects_dict) - 1:
         return knapsack
 
     left = knapsack.duplicate()
     right = knapsack.duplicate()
 
-    if right.append_item(objects_dict, index):
-        right = find_optimal(right, objects_dict, index + 1)
+    if right.append_item(objects_dict, items_sorted[index]):
+        right = find_optimal(right, objects_dict, index + 1, items_sorted)
 
-    left = find_optimal(left, objects_dict, index + 1)
+    left = find_optimal(left, objects_dict, index + 1, items_sorted)
 
     if left.get_value_and_weight(objects_dict)[0] > right.get_value_and_weight(objects_dict)[0]:
         return left
