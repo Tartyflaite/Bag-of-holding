@@ -29,14 +29,14 @@ class Knapsack:
         return knapsack
 
     def append_item(self, objects_dict, index):
-        if self.get_value_and_weight()
-
+        if self.get_value_and_weight(objects_dict)[1]<self.capacity:
+            self.content.append(objects_dict[index][0])
 
 
 def solve_knapsack_greedy(knapsack, objects_dict) -> Knapsack:
     items_sorted = sort_value_efficiency(objects_dict)
     for item in items_sorted:
-        if knapsack.get_value_and_weight(objects_dict)[1]+item[1][1] <= knapsack.capacity :
+        if knapsack.get_value_and_weight(objects_dict)[1] + item[1][1] <= knapsack.capacity:
             knapsack.content.append(item[0])
     return knapsack
 
@@ -46,7 +46,25 @@ def sort_value_efficiency(objects_dic: dict):
 
 
 def solve_knapsack_best(knapsack, objects_dict) -> Knapsack:
-    return knapsack
+    table = [[knapsack.duplicate() for x in range(knapsack.capacity + 1)] for x in range(len(objects_dict) + 1)]
+    items_sorted = sort_value_efficiency(objects_dict)
+    for i in range(len(objects_dict) + 1):
+        for j in range(knapsack.capacity + 1):
+            if i == 0 or j == 0:
+                table[i][j] = knapsack.duplicate()
+            elif items_sorted[i - 1][1][1] <= j:
+                value = items_sorted[i - 1][1][0]
+                weight = items_sorted[i - 1][1][1]
+                old=table[i - 1][j].duplicate()
+                new=old.duplicate()
+                new.append_item(objects_dict,items_sorted[i - 1][0])
+                if new.get_value_and_weight(objects_dict)[0]>old.get_value_and_weight(objects_dict)[0]:
+                    table[i][j]=new
+                else:
+                    table[i][j] = old.duplicate()
+            else:
+                table[i][j] = table[i - 1][j].duplicate()
+    return table[knapsack.capacity][len(objects_dict)][0]
 
 
 def solve_knapsack_optimal(knapsack, objects_dict) -> Knapsack:
@@ -68,4 +86,6 @@ def find_optimal(knapsack: Knapsack, objects_dict: dict, index: int) -> Knapsack
     if left.get_value_and_weight(objects_dict)[0] > right.get_value_and_weight(objects_dict)[0]:
         return left
     return right
+
+
 

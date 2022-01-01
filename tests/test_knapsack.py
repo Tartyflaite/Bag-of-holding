@@ -34,6 +34,9 @@ def get_medium_objects_dict():
     return data["stuff_dd"]
 
 
+print(sorted(get_medium_objects_dict()))
+
+
 class TestUtils:
     def test_print(self, capsys):
         sack, objects_dict = get_small_objects_dict()
@@ -133,3 +136,8 @@ class TestGreedyMedium:
         assert filled_sack.get_value_and_weight(objects_dict) == (weight, value)
         if capacity > 5:
             assert "Oeil et Main de Vecna" in sack.content
+
+class TestBest:
+    def testSolve(self):
+        sac = Knapsack(3)
+        print(solve_knapsack_best(sac, get_medium_objects_dict()))
