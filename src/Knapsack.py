@@ -65,7 +65,7 @@ def solve_knapsack_best(knapsack, objects_dict) -> Knapsack:
 
 
 def solve_knapsack_optimal(knapsack, objects_dict) -> Knapsack:
-    listed_dict = sort_value_efficiency(objects_dict)
+    listed_dict = list(objects_dict)
     return find_optimal(knapsack, objects_dict, 0, listed_dict)
 
 
