@@ -47,21 +47,16 @@ def sort_value_efficiency(objects_dic: dict):
 
 def solve_knapsack_best(knapsack, objects_dict) -> Knapsack:
     table = [[knapsack.duplicate() for x in range(knapsack.capacity + 1)] for x in range(len(objects_dict) + 1)]
-    items_sorted = sort_value_efficiency(objects_dict)
+    listed_dict = list(objects_dict)
     for i in range(len(objects_dict) + 1):
         for j in range(knapsack.capacity + 1):
             if i == 0 or j == 0:
                 table[i][j] = knapsack.duplicate()
-            elif items_sorted[i - 1][1][1] <= j:
-                value = items_sorted[i - 1][1][0]
-                weight = items_sorted[i - 1][1][1]
-
-                old=table[i - 1][j].duplicate()
-                new=old.duplicate()
-                new.append_item(objects_dict,items_sorted[i - 1][0])
-
-                if new.get_value_and_weight(objects_dict)[0]>old.get_value_and_weight(objects_dict)[0]:
-                    table[i][j]=new
+            elif listed_dict[i - 1][1][1] <= j:
+                old = table[i - 1][j].duplicate()
+                new = old.duplicate().append_item(objects_dict, listed_dict[i - 1][0])
+                if new.get_value_and_weight(objects_dict)[0] > old.get_value_and_weight(objects_dict)[0]:
+                    table[i][j] = new
                 else:
                     table[i][j] = old.duplicate()
             else:
@@ -70,25 +65,22 @@ def solve_knapsack_best(knapsack, objects_dict) -> Knapsack:
 
 
 def solve_knapsack_optimal(knapsack, objects_dict) -> Knapsack:
-    items_sorted = sort_value_efficiency(objects_dict)
-    return find_optimal(knapsack, objects_dict, 0, items_sorted)
+    listed_dict = sort_value_efficiency(objects_dict)
+    return find_optimal(knapsack, objects_dict, 0, listed_dict)
 
 
-def find_optimal(knapsack: Knapsack, objects_dict: dict, index: int, items_sorted) -> Knapsack:
+def find_optimal(knapsack: Knapsack, objects_dict: dict, index: int, listed_dict) -> Knapsack:
     if index >= len(objects_dict) - 1:
         return knapsack
 
     left = knapsack.duplicate()
     right = knapsack.duplicate()
 
-    if right.append_item(objects_dict, items_sorted[index]):
-        right = find_optimal(right, objects_dict, index + 1, items_sorted)
+    if right.append_item(objects_dict, listed_dict[index]):
+        right = find_optimal(right, objects_dict, index + 1, listed_dict)
 
-    left = find_optimal(left, objects_dict, index + 1, items_sorted)
+    left = find_optimal(left, objects_dict, index + 1, listed_dict)
 
     if left.get_value_and_weight(objects_dict)[0] > right.get_value_and_weight(objects_dict)[0]:
         return left
     return right
-
-
-
