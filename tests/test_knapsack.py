@@ -4,9 +4,9 @@ import pathlib
 
 import pytest
 from Knapsack import (
-    Knapsack, solve_knapsack_greedy, solve_knapsack_optimal
-    #,solve_knapsack_best 
+    Knapsack, solve_knapsack_greedy, solve_knapsack_optimal, solve_knapsack_best
 )
+
 
 def get_small_objects_dict(capacity=60):
     small_objects_dict = {
@@ -141,17 +141,80 @@ class TestGreedyMedium:
             assert "Oeil et Main de Vecna" in sack.content
 
 
+class TestBestSmall:
+    def test_solve(self):
+        sack, objects_dict = get_small_objects_dict()
+        filled_sack = solve_knapsack_best(knapsack=sack, objects_dict=objects_dict)
+        assert filled_sack.get_value_and_weight(objects_dict) == (6544, 59)
+
+    @pytest.mark.parametrize(
+        "capacity, weight, value",
+        [
+            (1000, 7285, 94),
+            (100, 7285, 94),
+            (50, 6005, 50),
+            (10, 1753, 9),
+            (5, 853, 5),
+            (0, 0, 0),
+        ])
+    def test_solve_bigger(self, capacity, weight, value):
+        sack, objects_dict = get_small_objects_dict(capacity)
+        filled_sack = solve_knapsack_greedy(knapsack=sack, objects_dict=objects_dict)
+        assert filled_sack.get_value_and_weight(objects_dict) == (weight, value)
+
+
+class TestBestMedium:
+    def test_solve(self):
+        sack = Knapsack(100)
+        objects_dict = get_medium_objects_dict()
+        filled_sack = solve_knapsack_best(knapsack=sack, objects_dict=objects_dict)
+        assert filled_sack.get_value_and_weight(objects_dict) >= (118000455, 100)
+
+    @pytest.mark.parametrize(
+        "capacity, weight, value",
+        [
+            (10000, 203583402, 9723),
+            (1000, 163881015, 1000),
+            (100, 118000455, 100),
+            (50, 84260426, 50),
+            (10, 18220131, 10),
+            (5, 260148, 5),
+            (3, 180019, 3),
+            (1, 40081, 1),
+        ])
+    def test_solve_medium(self, capacity, weight, value):
+        sack = Knapsack(capacity)
+        objects_dict = get_medium_objects_dict()
+        filled_sack = solve_knapsack_best(knapsack=sack, objects_dict=objects_dict)
+        assert filled_sack.get_value_and_weight(objects_dict) >= (weight, value)
+
+
+    @pytest.mark.parametrize(
+        "capacity, weight, value",
+        [(1000000, 203653539, 20737), (100000000, 203671588, 1020746)])
+    def test_solve_big(self, capacity, weight, value):
+        sack = Knapsack(capacity)
+        objects_dict = get_medium_objects_dict()
+        filled_sack = solve_knapsack_best(knapsack=sack, objects_dict=objects_dict)
+        assert filled_sack.get_value_and_weight(objects_dict) >= (weight, value)
+
+
+
 class TestOptimal:
-    def test_solve_little(self) :
+    def test_solve_little(self):
         sack, objects_dict = get_small_objects_dict()
         filled_sack = solve_knapsack_optimal(sack, objects_dict)
         assert filled_sack.get_value_and_weight(objects_dict) == (6544, 59)
 
-    def test_solve_big(self) :
-        sack = Knapsack(1)
+    @pytest.mark.parametrize(
+        "capacity, weight, value",
+        [
+            (5, 260148, 5),
+            (3, 180019, 3),
+            (1, 40081, 1),
+        ])
+    def test_solve_medium(self, capacity, weight, value):
+        sack = Knapsack(capacity)
         objects_dict = get_medium_objects_dict()
-        solve_knapsack_optimal(sack, objects_dict).print_content(objects_dict)
-
-
-testOptiSmall = TestOptimal()
-testOptiSmall.test_solve_big()
+        filled_sack = solve_knapsack_optimal(knapsack=sack, objects_dict=objects_dict)
+        assert filled_sack.get_value_and_weight(objects_dict) == (weight, value)
