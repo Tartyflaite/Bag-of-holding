@@ -188,7 +188,6 @@ class TestBestMedium:
         filled_sack = solve_knapsack_best(knapsack=sack, objects_dict=objects_dict)
         assert filled_sack.get_value_and_weight(objects_dict) >= (weight, value)
 
-
     @pytest.mark.parametrize(
         "capacity, weight, value",
         [(1000000, 203653539, 20737), (100000000, 203671588, 1020746)])
@@ -197,7 +196,6 @@ class TestBestMedium:
         objects_dict = get_medium_objects_dict()
         filled_sack = solve_knapsack_best(knapsack=sack, objects_dict=objects_dict)
         assert filled_sack.get_value_and_weight(objects_dict) >= (weight, value)
-
 
 
 class TestOptimal:

@@ -19,7 +19,8 @@ class Knapsack:
             content += f"{obj} {objects_dict[obj][0]} {objects_dict[obj][1]}\n"
             poids += objects_dict[obj][1]
             valeur += objects_dict[obj][0]
-        content += f"Le sac a {len(self.content)} objets, pour une valeur de {valeur} et un poids de {poids}/{self.capacity} "
+        content += f"Le sac a {len(self.content)} objets, pour une valeur de {valeur} et un poids de " \
+                   f"{poids}/{self.capacity} "
         print(content)
 
     # Crée un nouveau Knapsack identique
@@ -90,8 +91,8 @@ def solve_knapsack_best(knapsack, objects_dict) -> Knapsack:
                 weight = objects_list[i - 1][1][1]
 
                 not_included = table[i - 1][j].duplicate()
-                included = table[i - 1][j-weight].duplicate()
-                included.add_item(objects_dict, objects_list, i-1)
+                included = table[i - 1][j - weight].duplicate()
+                included.add_item(objects_dict, objects_list, i - 1)
                 if included.get_value_and_weight(objects_dict)[0] > not_included.get_value_and_weight(objects_dict)[0]:
                     table[i][j] = included.duplicate()
                 else:
