@@ -1,9 +1,11 @@
 import json
+import os
+import pathlib
 
 import pytest
 from Knapsack import (
     Knapsack, solve_knapsack_greedy, solve_knapsack_optimal
-    # ,solve_knapsack_best 
+    #,solve_knapsack_best 
 )
 
 def get_small_objects_dict(capacity=60):
@@ -29,7 +31,11 @@ def get_small_objects_dict(capacity=60):
 
 
 def get_medium_objects_dict():
-    with open("stuff_dd.json") as file:
+    # Ajout de cette ligne pour palier un problème lors de l'exécution
+    # Le fichier "stuff_dd.json" était recherché à l'emplacement de l'exécutable et à celui du code source
+    # Cette ligne permet de forcer la recherche à partir du fichier de code source
+    root_dict = os.path.join(pathlib.Path(__file__).parent.absolute(), "stuff_dd.json")
+    with open(root_dict) as file:
         data = json.load(file)
     return data["stuff_dd"]
 
